@@ -1,0 +1,55 @@
+AspNetUsers
+	Id
+	Email
+	PhoneNumber
+	UserName
+
+UserFavorQuestions
+	UserId
+	QuestionId
+
+UserRateQuestions
+	UserId
+	QuestionId
+	IsPositive
+
+Questions
+	Id
+	UserId
+	BestAnswerId
+	Title
+	Detail
+	ViewCount
+	IsClosed
+	CreateTime
+	UpdateTime
+	ClosedTime
+
+QuestionTags
+	QuestionId
+	TagId
+
+Tags
+	Id
+	Name
+
+UserRateAnswers
+	UserId
+	AnswerId
+	IsPositive
+
+Answers
+	Id
+	UserId
+	QuestionId
+	Detail
+	CreateTime
+	UpdateTime
+
+Comments
+	Id
+	UserId
+	AnswerId
+	Detail
+	CreateTime
+	UpdateTime

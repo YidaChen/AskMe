@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="134568a2e61646ca829cab3babb2c4d5" Name="Diagram1" ZoomLevel="86" DisplayType="false">
+        <EntityTypeShape EntityType="QAModel.Answers" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.AspNetUsers" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.Comments" Width="1.5" PointX="7.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.Questions" Width="1.5" PointX="10.5" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.Tags" Width="1.5" PointX="12.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.UserRateAnswers" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QAModel.UserRateQuestions" Width="1.5" PointX="12.75" PointY="5.25" IsExpanded="true" />
+        <AssociationConnector Association="QAModel.FK_Answers_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_Answers_Questions" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_Comments_Answers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_Questions_Answers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_UserRateAnswers_Answers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_Comments_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_Questions_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_UserRateAnswers_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_UserRateQuestions_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.FK_UserRateQuestions_Questions" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.QuestionTags" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.UserFavorQuestions" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
