@@ -1,45 +1,107 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 
+	<!-- Basic Page Needs -->
+	<meta charset="utf-8">
+	<title>@ViewBag.Title</title>
+	<meta name="description" content="Ask me Responsive Questions and Answers Template">
+	<meta name="author" content="2code.info">
+	
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	
+	<!-- Main Style -->
+	<link rel="stylesheet" href="/style.css">
+	
+	<!-- Skins -->
+	<link rel="stylesheet" href="/css/skins/skins.css">
+	
+	<!-- Responsive Style -->
+	<link rel="stylesheet" href="/css/responsive.css">
+	
+	<!-- Favicons -->
+	<link rel="shortcut icon" href="http://2code.info/demo/html/ask-me/images/favicon.ico">
+	@RenderSection("CSS", required: false)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("應用程式名稱", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("首頁", "Index", "Home")</li>
-                    <li>@Html.ActionLink("關於", "About", "Home")</li>
-                    <li>@Html.ActionLink("連絡方式", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
-        </footer>
-    </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+<div class="loader"><div class="loader_html"></div></div>
+
+<div id="wrap">
+	<!--無法同時綁定Questions與LoginViewModel, 獨立一個新的登入頁面-->
+	@*@Html.Partial("_LoginPartial")*@
+	
+	<div id="header-top">
+		<section class="container clearfix">
+			<nav class="header-top-nav">
+				<ul>
+@if (Request.IsAuthenticated)
+{
+	<li><a href="#"><i class="icon-user"></i>Hello @User.Identity.GetUserName()</a></li>
+	<li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="icon-headphones"></i>登出</a></li>
+	<form id="logoutForm" action="/Account/LogOff" method="post">@Html.AntiForgeryToken()</form>
+}
+else
+{
+	<li><a href="/Account/Login"><i class="icon-user"></i>登入</a></li>
+}
+				</ul>
+			</nav>
+			<div class="header-search">
+				<form method="get" action="/Questions/Search">
+				    <input type="text" name="s" placeholder="搜尋問題">
+				    <button type="submit" class="search-submit"></button>
+				</form>
+			</div>
+		</section><!-- End container -->
+	</div><!-- End header-top -->
+	<header id="header" class="index-no-box" style="margin-bottom:10px;">
+		<section class="container clearfix">
+			<div class="logo"><a href="/"><img alt="" src="/images/logo.png"></a></div>
+
+		</section><!-- End container -->
+	</header><!-- End header -->
+	
+	<section class="container main-content">
+		<div class="row">
+			@RenderBody()
+			<!--登入與註冊頁不顯示sidebar-->
+			@if (Url.Action() != "/Account/Login" &&
+				Url.Action() != "/Account/Register")
+			{
+				@Html.Partial("_SidebarPartial")
+			}
+		</div><!-- End row -->
+	</section><!-- End container -->
+	
+	@Html.Partial("_FooterPartial")
+</div><!-- End wrap -->
+
+<div class="go-up"><i class="icon-chevron-up"></i></div>
+
+<!-- js -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/js/jquery.easing.1.3.min.js"></script>
+<script src="/js/html5.js"></script>
+<script src="/js/twitter/jquery.tweet.js"></script>
+<script src="/js/jflickrfeed.min.js"></script>
+<script src="/js/jquery.inview.min.js"></script>
+<script src="/js/jquery.tipsy.js"></script>
+<script src="/js/tabs.js"></script>
+<script src="/js/jquery.flexslider.js"></script>
+<script src="/js/jquery.prettyPhoto.js"></script>
+<script src="/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+<script src="/js/jquery.scrollTo.js"></script>
+<script src="/js/jquery.nav.js"></script>
+<script src="/js/tags.js"></script>
+<script src="/js/jquery.bxslider.min.js"></script>
+<script src="/js/custom.js"></script>
+<!-- End js -->
+	@RenderSection("scripts", required: false)
 </body>
 </html>

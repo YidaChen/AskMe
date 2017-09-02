@@ -1,0 +1,43 @@
+@model AskMe.Models.Answers
+
+@{
+	ViewBag.Title = "編輯解答";
+	Model.Detail = Model.Detail.Replace("<br />", "\r\n");// 轉換br
+}
+<div class="col-md-9">
+	<article class="question single-question question-type-normal">
+		<h2>
+			<a href="#">@Model.Questions.Title</a>
+		</h2>
+		<a class="question-report" style="background-color: gray" href="#">發問者: @Model.Questions.AspNetUsers.UserName</a>
+		<div class="question-inner">
+			<div class="clearfix"></div>
+			<div class="question-desc">
+				<!--可能會有XSS問題?-->
+				<div>
+					@Html.Raw(Model.Questions.Detail)
+				</div>
+			</div>
+		</div>
+	</article>
+
+	<div id="respond" class="comment-respond page-content clearfix">
+		<div class="boxedtitle page-title"><h2>編輯解答</h2></div>
+		<form action="/Answers/Edit" method="post" id="commentform" class="comment-form">
+			@Html.AntiForgeryToken()
+			<input type="hidden" name="id" value="@Model.Id" />
+			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+			<div id="respond-textarea">
+				@Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+				<p>
+					<label class="required" for="Detail">內容<span>*</span></label>
+					@Html.TextAreaFor(m => m.Detail, new { @cols = "58", @rows = "8", @id = "comment" })
+				</p>
+			</div>
+			<p class="form-submit">
+				<input name="submit" type="submit" id="submit" value="更新解答" class="button small color">
+			</p>
+		</form>
+	</div>
+</div>

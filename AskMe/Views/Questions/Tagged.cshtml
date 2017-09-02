@@ -1,0 +1,81 @@
+﻿@model AskMe.Models.Tags
+@{
+    ViewBag.Title = "Tagged";
+}
+<div class="col-md-12 boxedtitle" style="background-color: darkslategray">
+	<h2>@Model.Name <span id="tagBtnContain">
+	@{if (ViewBag.isFavoredTag)
+		{ <button id="FavorTag" class="tagBtn button green-button" action="disfavor">已關注</button> }
+		else
+		{<button id="disFavorTag" class="tagBtn button gray-button" action="favor">關注</button>}}
+</span> </h2>
+<hr />
+	<br />
+</div>
+<div class="col-md-9">
+	@{
+		foreach (var q in Model.Questions)
+		{
+			<article class="question question-type-normal" style="padding:10px">
+				<h2 style="margin:0;padding:0">
+					<!--<span class="question-view">得票 2 |</span>-->
+					<span class="question-view"><i class="icon-comment"></i>@q.Answers.Count 回答 |</span>
+					<span class="question-view"><i class="icon-user"></i>@q.ViewCount 瀏覽</span>
+					| <a href="/Questions/Details/@q.Id">@q.Title</a>
+				</h2>
+				<div class="question-inner" style="margin:0">
+					<div class="clearfix"></div>
+					<div class="question-details">
+						<span class="question-answered question-answered-done">
+						@{
+							if (q.Answers1 != null)//已選出最佳解
+							{
+								<i class="icon-ok"></i><span>有最佳解</span>
+							}
+							else
+							{
+								<span style="color:red"><i class="icon-question"></i>無最佳解</span>
+							}
+						}
+						</span>
+						<span class="question-favorite"><i class="icon-star"></i>@q.AspNetUsers1.Count</span>
+					</div>
+					<span class="question-date"><i class="icon-time"></i>@q.UpdateTime</span>
+					<span><i class="icon-tags"></i>@{
+						foreach (var tag in q.Tags)
+						{
+							<a href="/Questions/Tagged/@tag.Name">@tag.Name</a><span>, </span>
+						}
+					}</span>
+					<div class="clearfix"></div>
+				</div>
+			</article>
+		}
+	}
+	<!--<a href="#" class="load-questions"><i class="icon-refresh"></i>載入更多問題</a>-->
+</div><!-- End main -->
+@section Scripts {
+<script>
+	var tagId = @Model.Id;
+	var FavorTag = '<button id="FavorTag" class="tagBtn button green-button" action="disfavor">已關注</button>';
+	var disFavorTag = '<button id="disFavorTag" class="tagBtn button gray-button" action="favor">關注</button>';
+
+	$('#tagBtnContain').on('click', '.tagBtn', function (e) {
+		var act = $(this).attr('action');
+
+		$.ajax({
+			dataType: "json",
+			url: '/Tags/UserFavor',
+			method: "post",
+			data: { tagId: tagId, act: act},
+			success: function (data) {
+				console.log(data);
+				if (act == 'disfavor')
+					$('#tagBtnContain').html(disFavorTag);
+				else if (act == 'favor')
+					$('#tagBtnContain').html(FavorTag);
+			}
+		});
+	});
+</script>	
+}

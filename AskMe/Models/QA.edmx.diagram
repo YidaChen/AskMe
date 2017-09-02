@@ -30,6 +30,7 @@
         <AssociationConnector Association="QAModel.AspNetUserRoles" ManuallyRouted="false" />
         <AssociationConnector Association="QAModel.QuestionTags" ManuallyRouted="false" />
         <AssociationConnector Association="QAModel.UserFavorQuestions" ManuallyRouted="false" />
+        <AssociationConnector Association="QAModel.UserFavorTags" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

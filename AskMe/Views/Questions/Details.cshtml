@@ -1,90 +1,283 @@
-嚜濃model AskMe.Models.Questions
+@using Microsoft.AspNet.Identity;
+@model AskMe.Models.Questions
 
 @{
-    ViewBag.Title = "Details";
+	ViewBag.Title = "Details";
+	int rateCount = 0;
+	foreach (var rate in Model.UserRateQuestions)
+	{
+		if (rate.IsPositive) {
+			rateCount++;
+		} else {
+			rateCount--;
+		}
+	}
+	var userRateQuestion = Model.UserRateQuestions.Where(x => x.UserId == User.Identity.GetUserId()).FirstOrDefault();
 }
 
-<h2>Details</h2>
+<div class="col-md-9">
+    <article class="question single-question question-type-normal">
+        <h2>
+            <a href="/Questions/Details/@Model.Id">@Model.Title</a>
+        </h2>
+        <a class="question-report" style="background-color: gray" href="#">發問者: @Model.AspNetUsers.UserName</a>
+		<div class="question-inner">
+            <div class="clearfix"></div>
+            <div class="question-desc">
+				<!--可能會有XSS問題?-->
+				<div>
+					@Html.Raw(Model.Detail)
+				</div>
+				<br>
+				<div class="question-tags">
+					<i class="icon-tags"></i>
+					@{
+						foreach (var tag in Model.Tags)
+						{
+							<a href="/Questions/Tagged/@tag.Name">@tag.Name</a><span>, </span>
+						}
+					}
+					<span style="color:gray">  編輯於: @Model.UpdateTime</span>
+				</div>
+  </div>
+            <div class="question-details">
+				@{
+					if (Model.Answers1 != null)
+					{<span class="question-answered question-answered-done"><i class="icon-ok"></i>已有最佳解</span>}
+					else
+					{<span class="question-answered"><i class="icon-question"></i>未有最佳解</span>}
+				}
+                <span class="question-favorite"><span id="iconStarContain"></span><span id="starCount">@Model.AspNetUsers1.Count</span></span>
+            </div>
+            <span class="question-date"><i class="icon-time"></i>@Model.CreateTime</span>
+            <span class="question-comment"><a href="#"><i class="icon-comment"></i>@Model.Answers.Count 個回答</a></span>
+            <span class="question-view"><i class="icon-user"></i>@Model.ViewCount views</span>
+			<span class="single-question-vote-result"><span id="questionRateSign">
+	@{if (rateCount > 0){ @Html.Raw("+");}
+			}</span><span id="questionRateCount">@rateCount</span>
+		</span>
+            <ul class="single-question-vote">
+                <li><a href="javascript:void(0)" class="voteQuestion single-question-vote-down @{
+					if(userRateQuestion != null && !userRateQuestion.IsPositive)
+					{
+						@Html.Raw("dislikeButtonHover");
+					}
+                }" title="Dislike"><i class="icon-thumbs-down"></i></a></li>
+                <li><a href="javascript:void(0)" class="voteQuestion single-question-vote-up @{
+					if(userRateQuestion != null && userRateQuestion.IsPositive)
+					{
+						@Html.Raw("likeButtonHover");
+					}
+                }" title="Like"><i class="icon-thumbs-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+			@{
+				if (Model.UserId == User.Identity.GetUserId())
+				{ <a href="/Questions/Edit/@Model.Id" class="button" style="background-color:palevioletred">編輯</a> }
+			}
+        </div>
+    </article>
 
-<div>
-    <h4>Questions</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+    <div id="commentlist" class="page-content">
+        <ol class="commentlist clearfix">
+		@{
+			foreach (var answer in Model.Answers)
+			{
+				<li class="comment">
+					<div class="comment-body comment-body-answered clearfix">
+						<div class="comment-text">
+							<div class="author clearfix">
+								<div class="comment-author"><a href="#">@answer.AspNetUsers.UserName</a></div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Detail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Detail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ViewCount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ViewCount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsClosed)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsClosed)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ClosedTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClosedTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Answers1.UserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Answers1.UserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AspNetUsers.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AspNetUsers.Email)
-        </dd>
-
-    </dl>
+								<div class="comment-vote">
+									<ul class="question-vote">
+										<li><a answerId="@answer.Id" href="javascript:void(0)" class="question-vote-up answerVote" title="Like"></a></li>
+										<li><a answerId="@answer.Id" href="javascript:void(0)" class="question-vote-down answerVote" title="Dislike"></a></li>
+									</ul>
+								</div>
+								<span class="question-vote-result">@{
+									var answerRateCount = 0;
+									foreach (var rate in answer.UserRateAnswers)
+									{
+										if (rate.IsPositive)
+										{
+											answerRateCount++;
+										}
+										else
+										{
+											answerRateCount--;
+										}
+									}
+									var spanId = "answerRateCount"+answer.Id;
+									<span id="@spanId">@answerRateCount</span>
+								}</span>
+								<div class="comment-meta">
+									<div class="date"><i class="icon-time"></i>編輯於: @answer.UpdateTime</div>
+								</div>
+								<!--<a class="comment-reply" href="#"><i class="icon-reply"></i>回覆</a>--> 
+								@{
+									if (answer.UserId == User.Identity.GetUserId())
+									{
+										<a class="comment-reply" href="/Answers/Edit/@answer.Id" style="color:brown"><i class="icon-pencil"></i>編輯 </a>
+									}
+								}
+							</div>
+							<div class="text">
+								@Html.Raw(answer.Detail)
+							</div>
+							@{
+								if (Model.Answers1 != null && answer.Id == Model.Answers1.Id)
+								{
+									<div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div>
+								} else if (Model.UserId == User.Identity.GetUserId())//瀏覽的用戶是否為發問者
+								{
+									<button type="button" class="ChooseBestAnswer button green-button" answerId="@answer.Id">選為最佳解</button>
+								}
+	}
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+					</div>
+				</li>
+								}
+		}
+        </ol><!-- End commentlist -->
+    </div><!-- End page-content -->
+    
+    <div id="respond" class="comment-respond page-content clearfix">
+        <div class="boxedtitle page-title"><h2>留下解答</h2></div>
+        <form action="/Answers/Create" method="post" id="commentform" class="comment-form">
+            @Html.AntiForgeryToken()
+			<input type="hidden" name="QuestionId" value="@Model.Id" />
+			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+			@{if (Request.IsAuthenticated)
+				{
+					<div id="respond-textarea">
+						<p>
+							<label class="required" for="Detail">內容<span>*</span></label>
+							<textarea id="comment" name="Detail" required cols="58" rows="8"></textarea>
+						</p>
+					</div>
+					<p class="form-submit">
+						<input name="submit" type="submit" id="submit" value="發布解答" class="button small color">
+					</p>
+				}
+				else
+				{
+					<p class="form-submit">
+						<a id="submit" class="button small color" style="display:block;text-align:center" href="/Account/Login?ReturnUrl=/Questions/Details/@Model.Id">請先登入</a>
+					</p>
+				}
+			}
+        </form>
+    </div>
+    
+</div><!-- End main -->
+@section CSS{
+	<style>
+		.likeButtonHover {
+			color: white;
+			background-color: green;
+		}
+		.dislikeButtonHover {
+			color: white;
+			background-color: red;
+		}
+	</style>
+}
+@section Scripts {
+<script>
+	$('.ChooseBestAnswer').click(function (e) {
+		$.ajax({ //更新最佳解
+			dataType: "json",
+			method: "POST",
+			url: "/Questions/ChooseBestAnswer",
+			data: {
+				questionId: @Model.Id,
+				answerId: $(this).attr('answerId')
+		},
+			success: function (data) {
+				location.reload();
+			}
+		});
+	});
+	var iconStar = '<i class="icon-star iconFavor" act="disFavor"></i>';
+	var iconStarEmpty = '<i class="icon-star-empty iconFavor" act="favor"></i>';
+
+	$.ajax({ //用戶是否star此問題
+			dataType: "json",
+			method: "POST",
+			url: "/Questions/IsUserFavorQuestion",
+			data: { questionId: @Model.Id },
+			success: function (bool) {
+				if (bool)
+					$('#iconStarContain').append(iconStar);
+				else
+					$('#iconStarContain').append(iconStarEmpty);
+
+				iconFavorOnClick();
+			}
+	});
+	function iconFavorOnClick() {
+		$('.question-favorite').click(function (e)
+		{
+			var act = $('.iconFavor').attr('act');
+
+			$.ajax({ //star或unstar此問題
+			dataType: "json",
+			method: "POST",
+			url: "/Questions/UserFavorQuestion",
+			data: { questionId: @Model.Id, act: act },
+			success: function (starCount) {
+
+				if (act == 'disFavor')
+					$('#iconStarContain').html(iconStarEmpty);
+				else if (act == 'favor')
+					$('#iconStarContain').html(iconStar);
+
+				$('#starCount').text(starCount);
+			}
+			});
+		});
+	}
+	$('.voteQuestion').click(function (e) {
+		var title = $(this).attr('title');// Like, Dislike
+		$.ajax({ //rate此問題
+			dataType: "json",
+			method: "POST",
+			url: "/Questions/UserRateQuestion",
+			data: { questionId: @Model.Id, act: title },
+			success: function (data) {
+				rateCount = data.trueCount - data.falseCount;
+				//console.log(rateCount);
+				$('#questionRateCount').text(rateCount);
+				if (rateCount > 0)
+					$('#questionRateSign').text('+');
+				else
+					$('#questionRateSign').text('');
+
+				if (title == 'Like') {
+					$('.single-question-vote-up').addClass('likeButtonHover');
+					$('.single-question-vote-down').removeClass('dislikeButtonHover');
+				} else if (title == 'Dislike') {
+					$('.single-question-vote-up').removeClass('likeButtonHover');
+					$('.single-question-vote-down').addClass('dislikeButtonHover');
+				}
+			}
+			});
+	});
+	$('.answerVote').click(function (e) {
+		var title = $(this).attr('title');// Like, Dislike
+		var answerId = $(this).attr('answerId');
+		$.ajax({ //rate此問題
+			dataType: "json",
+			method: "POST",
+			url: "/Answers/UserRateAnswer",
+			data: { answerId: answerId, act: title },
+			success: function (data) {
+				rateCount = data.trueCount - data.falseCount;
+				//console.log(rateCount);
+				$('#answerRateCount' + answerId).text(rateCount);
+			}
+			});
+	});
+</script>
+}

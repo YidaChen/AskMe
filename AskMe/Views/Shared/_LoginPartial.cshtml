@@ -1,22 +1,101 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
+@using AskMe.Models
+@model LoginViewModel
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">登出</a></li>
-    </ul>
-    }
-}
-else
+@if (!Request.IsAuthenticated)
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("註冊", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("登入", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+	<div class="login-panel">
+		<section class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="page-content">
+						<h2>登入</h2>
+						<div class="form-style form-style-3">
+							<form action="/Account/Login" method="post">
+								@Html.AntiForgeryToken()
+								<div class="form-inputs clearfix">
+									<p class="login-text">
+										<input type="text" value="Email" onfocus="if (this.value == 'Email') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Email';}">
+										<i class="icon-user"></i>
+									</p>
+									@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+									<p class="login-password">
+										<input type="password" value="Password" onfocus="if (this.value == 'Password') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Password';}">
+										<i class="icon-lock"></i>
+										<a href="#">Forget</a>
+									</p>
+									@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+								</div>
+								<p class="form-submit login-submit">
+									<input type="submit" value="Log in" class="button color small login-submit submit">
+								</p>
+								<div class="rememberme">
+									<label>@Html.CheckBoxFor(m => m.RememberMe) Remember Me</label>
+								</div>
+							</form>
+						</div>
+					</div><!-- End page-content -->
+				</div><!-- End col-md-6 -->
+				<div class="col-md-6">
+					<div class="page-content Register">
+						<h2>Register Now</h2>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravdio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequa. Vivamus vulputate posuere nisl quis consequat.</p>
+						<a class="button color small signup">Create an account</a>
+					</div><!-- End page-content -->
+				</div><!-- End col-md-6 -->
+			</div>
+		</section>
+	</div><!-- End login-panel -->
+
+	<div class="panel-pop" id="signup">
+		<h2>Register Now<i class="icon-remove"></i></h2>
+		<div class="form-style form-style-3">
+			<form>
+				<div class="form-inputs clearfix">
+					<p>
+						<label class="required">Username<span>*</span></label>
+						<input type="text">
+					</p>
+					<p>
+						<label class="required">E-Mail<span>*</span></label>
+						<input type="email">
+					</p>
+					<p>
+						<label class="required">Password<span>*</span></label>
+						<input type="password" value="">
+					</p>
+					<p>
+						<label class="required">Confirm Password<span>*</span></label>
+						<input type="password" value="">
+					</p>
+				</div>
+				<p class="form-submit">
+					<input type="submit" value="Signup" class="button color small submit">
+				</p>
+			</form>
+		</div>
+	</div><!-- End signup -->
+
+	<div class="panel-pop" id="lost-password">
+		<h2>Lost Password<i class="icon-remove"></i></h2>
+		<div class="form-style form-style-3">
+			<p>Lost your password? Please enter your username and email address. You will receive a link to create a new password via email.</p>
+			<form>
+				<div class="form-inputs clearfix">
+					<p>
+						<label class="required">Username<span>*</span></label>
+						<input type="text">
+					</p>
+					<p>
+						<label class="required">E-Mail<span>*</span></label>
+						<input type="email">
+					</p>
+				</div>
+				<p class="form-submit">
+					<input type="submit" value="Reset" class="button color small submit">
+				</p>
+			</form>
+			<div class="clearfix"></div>
+		</div>
+	</div><!-- End lost-password -->
 }

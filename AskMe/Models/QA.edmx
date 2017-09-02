@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Answers">
           <Key>
             <PropertyRef Name="Id" />
@@ -115,6 +115,14 @@
           </Key>
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="QuestionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserFavorTags">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserRateAnswers">
           <Key>
@@ -320,6 +328,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserFavorTags_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserFavorTags" Type="Self.UserFavorTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFavorTags">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserFavorTags_Tags">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserFavorTags" Type="Self.UserFavorTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFavorTags">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserRateAnswers_Answers">
           <End Role="Answers" Type="Self.Answers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -388,6 +424,7 @@
           <EntitySet Name="QuestionTags" EntityType="Self.QuestionTags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserFavorQuestions" EntityType="Self.UserFavorQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserFavorTags" EntityType="Self.UserFavorTags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRateAnswers" EntityType="Self.UserRateAnswers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRateQuestions" EntityType="Self.UserRateQuestions" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Answers_AspNetUsers" Association="Self.FK_Answers_AspNetUsers">
@@ -446,6 +483,14 @@
             <End Role="Questions" EntitySet="Questions" />
             <End Role="UserFavorQuestions" EntitySet="UserFavorQuestions" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserFavorTags_AspNetUsers" Association="Self.FK_UserFavorTags_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserFavorTags" EntitySet="UserFavorTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserFavorTags_Tags" Association="Self.FK_UserFavorTags_Tags">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="UserFavorTags" EntitySet="UserFavorTags" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserRateAnswers_Answers" Association="Self.FK_UserRateAnswers_Answers">
             <End Role="Answers" EntitySet="Answers" />
             <End Role="UserRateAnswers" EntitySet="UserRateAnswers" />
@@ -463,8 +508,7 @@
             <End Role="UserRateQuestions" EntitySet="UserRateQuestions" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -538,6 +582,7 @@
           <NavigationProperty Name="UserRateQuestions" Relationship="Self.FK_UserRateQuestions_AspNetUsers" FromRole="AspNetUsers" ToRole="UserRateQuestions" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
           <NavigationProperty Name="Questions1" Relationship="Self.UserFavorQuestions" FromRole="AspNetUsers" ToRole="Questions" />
+          <NavigationProperty Name="Tags" Relationship="QAModel.UserFavorTags" FromRole="AspNetUsers" ToRole="Tags" />
         </EntityType>
         <EntityType Name="Comments">
           <Key>
@@ -580,6 +625,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Questions" Relationship="Self.QuestionTags" FromRole="Tags" ToRole="Questions" />
+          <NavigationProperty Name="AspNetUsers" Relationship="QAModel.UserFavorTags" FromRole="Tags" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="UserRateAnswers">
           <Key>
@@ -844,7 +890,15 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Questions" EntitySet="Questions" />
           </AssociationSet>
+          <AssociationSet Name="UserFavorTags" Association="QAModel.UserFavorTags">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Tags" EntitySet="Tags" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="UserFavorTags">
+          <End Type="QAModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
+          <End Type="QAModel.Tags" Role="Tags" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -984,6 +1038,14 @@
             </EndProperty>
             <EndProperty Name="Questions">
               <ScalarProperty Name="Id" ColumnName="QuestionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserFavorTags" TypeName="QAModel.UserFavorTags" StoreEntitySet="UserFavorTags">
+            <EndProperty Name="Tags">
+              <ScalarProperty Name="Id" ColumnName="TagId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

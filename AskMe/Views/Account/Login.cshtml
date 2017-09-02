@@ -1,63 +1,43 @@
-﻿@using AskMe.Models
+@using AskMe.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "登入";
+	ViewBag.Title = "�n�J";
 }
 
-<h2>@ViewBag.Title.</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>使用本機帳戶登入。</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="登入" class="btn btn-default" />
-                    </div>
-                </div>
-                <p>
-                    @Html.ActionLink("註冊為新使用者", "Register")
-                </p>
-                @* 請在啟用密碼重設功能的帳戶確認之後啟用此項目
-                    <p>
-                        @Html.ActionLink("忘記密碼?", "ForgotPassword")
-                    </p>*@
-            }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<div class="col-md-6">
+	<div class="page-content">
+		<h2>Login</h2>
+		<div class="form-style form-style-3">
+			<form method="post">
+				@Html.AntiForgeryToken()
+				<div class="form-inputs clearfix">
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					<p class="login-text">
+						<input name="Email" type="text" value="Email" onfocus="if (this.value == 'Email') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Email';}">
+						<i class="icon-user"></i>
+					</p>
+					@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+					<p class="login-password">
+						<input name="Password" type="password" value="Password" onfocus="if (this.value == 'Password') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Password';}">
+						<i class="icon-lock"></i>
+						<a href="#">Forget</a>
+					</p>
+					@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+				</div>
+				<p class="form-submit login-submit">
+					<input type="submit" value="Log in" class="button color small login-submit submit">
+				</p>
+				<div class="rememberme">
+					<label>@Html.CheckBoxFor(m => m.RememberMe) Remember Me</label>
+				</div>
+			</form>
+		</div>
+	</div><!-- End page-content -->
+</div><!-- End col-md-6 -->
+<div class="col-md-6">
+	<div class="page-content">
+		<h2>Register Now</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravdio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequa. Vivamus vulputate posuere nisl quis consequat.</p>
+		<a href="/Account/Register" class="button small color">Create an account</a>
+	</div><!-- End page-content -->
+</div><!-- End col-md-6 -->

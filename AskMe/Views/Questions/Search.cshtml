@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AskMe.Models.QuestionsView.IndexQuestion>
+@{
+    ViewBag.Title = "搜尋";
+}
+
+<div class="col-md-9">
+
+	<div class="tabs-warp question-tab">
+		<div class="tab-inner-warp1">
+			<div id="questionsContainer" class="tab-inner">
+				@{
+					foreach(var q in Model) { 
+				<article class="question question-type-normal" style="padding:10px">
+					<h2 style="margin:0;padding:0">
+						<!--<span class="question-view">得票 2 |</span>-->
+						<span class="question-view"><i class="icon-comment"></i><span class="AnswerCount">@q.AnswerCount</span> 回答 |</span>
+						<span class="question-view"><i class="icon-user"></i><span class="ViewCount">@q.ViewCount</span> 瀏覽</span>
+						| <a class="Title" href="/Questions/Details/@q.Id">@q.Title</a>
+					</h2>
+					<div class="question-inner" style="margin:0">
+						<div class="clearfix"></div>
+						<div class="question-details">
+							<span class="question-favorite"><i class="icon-star"></i><span class="FavorCount">@q.FavorCount</span></span>
+						</div>
+						<span class="question-date"><i class="icon-time"></i><span class="CreateTime">@q.CreateTime</span></span>
+						<span>
+							<i class="icon-tags"></i>
+							<span class="Tags">@{foreach (var t in q.Tags) { @Html.Raw(t+", ") }}</span>
+						</span>
+						<div class="clearfix"></div>
+					</div>
+				</article>
+					}
+				}
+				<!--<a href="#" class="load-questions"><i class="icon-refresh"></i>Load More Questions</a>-->
+			</div>
+		</div>
+	</div><!-- End page-content -->
+</div><!-- End main -->

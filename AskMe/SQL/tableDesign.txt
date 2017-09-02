@@ -4,6 +4,10 @@ AspNetUsers
 	PhoneNumber
 	UserName
 
+UserFavorTags
+	UserId
+	TagId
+
 UserFavorQuestions
 	UserId
 	QuestionId
@@ -53,3 +57,5 @@ Comments
 	Detail
 	CreateTime
 	UpdateTime
+
+	SELECT q.Id, COUNT(a.Id) AS AnswerCount, COUNT(f.UserId) AS FavorCount FROM Questions AS q LEFT JOIN Answers AS a ON q.Id = a.QuestionId FULL OUTER JOIN UserFavorQuestions AS f ON q.Id = f.QuestionId GROUP BY q.Id, q.CreateTime ORDER BY q.CreateTime DESC;

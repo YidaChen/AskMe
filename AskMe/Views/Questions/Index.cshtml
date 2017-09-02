@@ -1,81 +1,83 @@
-﻿@model IEnumerable<AskMe.Models.Questions>
-
-@{
-    ViewBag.Title = "Index";
+﻿@{
+	ViewBag.Title = "Ask Me";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ViewCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsClosed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClosedTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Answers1.UserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUsers.Email)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ViewCount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsClosed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClosedTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Answers1.UserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUsers.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+<div class="col-md-9">
+	
+	<div class="tabs-warp question-tab">
+		<ul class="tabs">
+			<!--先不做--> <li id="ListByFavor" class="tab ListBy"><a href="javascript:void(0)" style="display:none">關注的話題</a></li>
+			<li id="ListByHot" class="tab ListBy"><a href="javascript:void(0)"class="current">熱門問題</a></li>
+			<li id="ListByLatest" class="tab ListBy"><a href="javascript:void(0)">最新問題</a></li>
+			<li id="ListByNoAnswer" class="tab ListBy"><a href="javascript:void(0)">等待回答</a></li>
+		</ul>
+		<div class="tab-inner-warp1">
+			<div id="questionsContainer" class="tab-inner">
+				<article class="question question-type-normal" style="padding:10px">
+					<h2 style="margin:0;padding:0">
+						<!--<span class="question-view">得票 2 |</span>-->
+						<span class="question-view"><i class="icon-comment"></i><span class="AnswerCount"></span> 回答 |</span>
+						<span class="question-view"><i class="icon-user"></i><span class="ViewCount"></span> 瀏覽</span>
+						| <a class="Title" href="/Questions/Details/1">標題1</a>
+					</h2>
+					<div class="question-inner" style="margin:0">
+						<div class="clearfix"></div>
+						<div class="question-details">
+							<span class="question-favorite"><i class="icon-star"></i><span class="FavorCount"></span></span>
+						</div>
+						<span class="question-date"><i class="icon-time"></i><span class="CreateTime"></span></span>
+						<span>
+							<i class="icon-tags"></i>
+								<span class="Tags"></span>
+						</span>
+						<div class="clearfix"></div>
+					</div>
+				</article>
+				<!--<a href="#" class="load-questions"><i class="icon-refresh"></i>Load More Questions</a>-->
+			</div>
+		</div>
+	</div><!-- End page-content -->
+</div><!-- End main -->
+@section CSS {
+	<style>
+		.ListByClick a {
+			background-color: #ff7361 !important;
+			color: white !important;
+		}
+	</style>	
 }
+@section Scripts {
+<script>
+	var question = $('.question').clone();
+	$('.question').remove();
 
-</table>
+	$('.ListBy').click(function (e) {
+		var id = $(this).attr('id');
+		var that = this;
+		$.ajax({ //根據點選的tab獲取問題列表
+			dataType: "json",
+			method: "POST",
+			url: "/Questions/ListBy/"+id,
+			success: function (d) {
+				console.log(d);
+				$('#questionsContainer').empty();
+				d.forEach(function (el) {
+					var article = question.clone();
+					article.find('.Title').text(el.Title).attr('href', '/Questions/Details/' + el.Id);
+					article.find('.ViewCount').text(el.ViewCount);
+					article.find('.FavorCount').text(el.FavorCount);
+					article.find('.AnswerCount').text(el.AnswerCount);
+
+					var date = new Date(parseInt(el.CreateTime.substr(6)));
+					article.find('.CreateTime').text(date.toLocaleDateString() +' '+ date.toLocaleTimeString());
+					article.find('.Tags').text(el.Tags.toString());
+
+					$('#questionsContainer').append(article);
+				});
+				$('.ListBy').removeClass('ListByClick');
+				$(that).addClass('ListByClick');
+			}
+		});
+	});
+	$("#ListByHot").trigger("click");
+</script>	
+}

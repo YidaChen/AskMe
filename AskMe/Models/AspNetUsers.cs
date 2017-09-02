@@ -26,6 +26,7 @@ namespace AskMe.Models
             this.UserRateQuestions = new HashSet<UserRateQuestions>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
             this.Questions1 = new HashSet<Questions>();
+            this.Tags = new HashSet<Tags>();
         }
     
         public string Id { get; set; }
@@ -59,5 +60,7 @@ namespace AskMe.Models
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Questions> Questions1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tags> Tags { get; set; }
     }
 }
