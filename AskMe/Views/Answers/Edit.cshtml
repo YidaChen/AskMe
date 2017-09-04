@@ -1,19 +1,19 @@
-@model AskMe.Models.Answers
+ï»¿@model AskMe.Models.Answers
 
 @{
-	ViewBag.Title = "½s¿è¸Ñµª";
-	Model.Detail = Model.Detail.Replace("<br />", "\r\n");// Âà´«br
+	ViewBag.Title = "ç·¨è¼¯è§£ç­”";
+	Model.Detail = Model.Detail.Replace("<br />", "\r\n");// è½‰æ›br
 }
 <div class="col-md-9">
 	<article class="question single-question question-type-normal">
 		<h2>
 			<a href="#">@Model.Questions.Title</a>
 		</h2>
-		<a class="question-report" style="background-color: gray" href="#">µo°İªÌ: @Model.Questions.AspNetUsers.UserName</a>
+		<a class="question-report" style="background-color: gray" href="#">ç™¼å•è€…: @Model.Questions.AspNetUsers.UserName</a>
 		<div class="question-inner">
 			<div class="clearfix"></div>
 			<div class="question-desc">
-				<!--¥i¯à·|¦³XSS°İÃD?-->
+				<!--å¯èƒ½æœƒæœ‰XSSå•é¡Œ?-->
 				<div>
 					@Html.Raw(Model.Questions.Detail)
 				</div>
@@ -22,7 +22,7 @@
 	</article>
 
 	<div id="respond" class="comment-respond page-content clearfix">
-		<div class="boxedtitle page-title"><h2>½s¿è¸Ñµª</h2></div>
+		<div class="boxedtitle page-title"><h2>ç·¨è¼¯è§£ç­”</h2></div>
 		<form action="/Answers/Edit" method="post" id="commentform" class="comment-form">
 			@Html.AntiForgeryToken()
 			<input type="hidden" name="id" value="@Model.Id" />
@@ -31,12 +31,12 @@
 			<div id="respond-textarea">
 				@Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
 				<p>
-					<label class="required" for="Detail">¤º®e<span>*</span></label>
+					<label class="required" for="Detail">å…§å®¹<span>*</span></label>
 					@Html.TextAreaFor(m => m.Detail, new { @cols = "58", @rows = "8", @id = "comment" })
 				</p>
 			</div>
 			<p class="form-submit">
-				<input name="submit" type="submit" id="submit" value="§ó·s¸Ñµª" class="button small color">
+				<input name="submit" type="submit" id="submit" value="æ›´æ–°è§£ç­”" class="button small color">
 			</p>
 		</form>
 	</div>

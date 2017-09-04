@@ -1,10 +1,10 @@
-@using System.Web;
+ï»¿@using System.Web;
 @model AskMe.Models.QuestionsView.EditViewModel
 
 @{
-	ViewBag.Title = "½s¿è";
-	Model.Detail = Model.Detail.Replace("<br />", "\r\n");// Âà´«br
-														  //«Øºcµ¹select2¹w³]¤Ä¿ïªºtags
+	ViewBag.Title = "ç·¨è¼¯";
+	Model.Detail = Model.Detail.Replace("<br />", "\r\n");// è½‰æ›br
+														  //å»ºæ§‹çµ¦select2é è¨­å‹¾é¸çš„tags
 	string tagStr = "";
 	System.Text.StringBuilder sb = new System.Text.StringBuilder();
 	if (ViewBag.Tags.Count > 0) {
@@ -18,7 +18,7 @@
 }
 <div class="col-md-9">
 	<div class="page-content ask-question">
-		<div class="boxedtitle page-title"><h2>½s¿è°İÃD</h2></div>
+		<div class="boxedtitle page-title"><h2>ç·¨è¼¯å•é¡Œ</h2></div>
 
 		<p></p>
 
@@ -30,23 +30,23 @@
 				<div class="form-inputs clearfix">
 					@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
 					<p>
-						<label class="required">¼ĞÃD<span>*</span></label>
+						<label class="required">æ¨™é¡Œ<span>*</span></label>
 						@Html.TextBoxFor(m => m.Title)
 						<span class="form-description">Please choose an appropriate title for the question to answer it even easier .</span>
 					</p>
 					<p>
-						<label>¼ĞÅÒ</label>
+						<label>æ¨™ç±¤</label>
 						<select id="tags_select" multiple="multiple" name="Tags"></select>
-						<span class="form-description">½Ğ¿ï¾Ü¦X¾AªºÃöÁä¦r ¦p : <span class="color">C# , JavaScript</span> .</span>
+						<span class="form-description">è«‹é¸æ“‡åˆé©çš„é—œéµå­— å¦‚ : <span class="color">C# , JavaScript</span> .</span>
 					</p>
 					<div class="clearfix"></div>
 					<!--
-					<label>ªş¥[ÀÉ®×</label>
+					<label>é™„åŠ æª”æ¡ˆ</label>
 					<div class="fileinputs">
 						<input type="file" class="file">
 						<div class="fakefile">
-							<button type="button" class="button small margin_0">¿ï¾ÜÀÉ®×</button>
-							<span><i class="icon-arrow-up"></i>ÂsÄı</span>
+							<button type="button" class="button small margin_0">é¸æ“‡æª”æ¡ˆ</button>
+							<span><i class="icon-arrow-up"></i>ç€è¦½</span>
 						</div>
 					</div>
 					-->
@@ -54,13 +54,13 @@
 				<div id="form-textarea">
 					@Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
 					<p>
-						<label class="required">¤º®e<span>*</span></label>
+						<label class="required">å…§å®¹<span>*</span></label>
 						@Html.TextAreaFor(m => m.Detail, new { @cols = "58", @rows = "8", @id = "question-details" })
 						<span class="form-description">Type the description thoroughly and in detail .</span>
 					</p>
 				</div>
 				<p class="form-submit">
-					<input type="submit" id="publish-question" value="½T»{½s¿è°İÃD" class="button color small submit">
+					<input type="submit" id="publish-question" value="ç¢ºèªç·¨è¼¯å•é¡Œ" class="button color small submit">
 				</p>
 			</form>
 		</div>
@@ -74,7 +74,7 @@
 	<script src="~/Scripts/select2.min.js"></script>
 	<script>
 		var select2_data = [];
-		$.ajax({ //Àò¨ú¸ê®Æ®wtags¦Cªí
+		$.ajax({ //ç²å–è³‡æ–™åº«tagsåˆ—è¡¨
 			dataType: "json",
 			url: "/Tags",
 			async: false,
@@ -88,11 +88,11 @@
 			}
 		});
 		$("#tags_select").select2({
-			tags: true, //¥i·s«Øtag
-			data: select2_data //¸ê®Æ®w­ì¦³tag
+			tags: true, //å¯æ–°å»ºtag
+			data: select2_data //è³‡æ–™åº«åŸæœ‰tag
 		});
 		$("#tags_select").val([@tagStr]).trigger('change');
-		$('form').submit(function (e) { //¨S¥Î, ´ú¸Õ¦Ó¤w
+		$('form').submit(function (e) { //æ²’ç”¨, æ¸¬è©¦è€Œå·²
 			//e.preventDefault();
 			//console.log($("#tags_select").val());
 			//console.log($('form').serialize());

@@ -58,7 +58,7 @@
 			method: "POST",
 			url: "/Questions/ListBy/"+id,
 			success: function (d) {
-				console.log(d);
+				//console.log(d);
 				$('#questionsContainer').empty();
 				d.forEach(function (el) {
 					var article = question.clone();

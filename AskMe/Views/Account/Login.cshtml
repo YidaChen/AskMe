@@ -1,34 +1,33 @@
-@using AskMe.Models
+﻿@using AskMe.Models
 @model LoginViewModel
 @{
-	ViewBag.Title = "�n�J";
+	ViewBag.Title = "登入";
 }
 
 <div class="col-md-6">
 	<div class="page-content">
-		<h2>Login</h2>
+		<h2>登入 (demo用, 已自動填入帳密)</h2>
 		<div class="form-style form-style-3">
 			<form method="post">
 				@Html.AntiForgeryToken()
 				<div class="form-inputs clearfix">
 					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 					<p class="login-text">
-						<input name="Email" type="text" value="Email" onfocus="if (this.value == 'Email') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Email';}">
+						<input name="Email" type="text" value="user01@gmail.com" placeholder="Email">
 						<i class="icon-user"></i>
 					</p>
 					@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
 					<p class="login-password">
-						<input name="Password" type="password" value="Password" onfocus="if (this.value == 'Password') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Password';}">
+						<input name="Password" type="password" value="AAzz@1234" placeholder="密碼">
 						<i class="icon-lock"></i>
-						<a href="#">Forget</a>
 					</p>
 					@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
 				</div>
 				<p class="form-submit login-submit">
-					<input type="submit" value="Log in" class="button color small login-submit submit">
+					<input type="submit" value="登入" class="button color small login-submit submit">
 				</p>
 				<div class="rememberme">
-					<label>@Html.CheckBoxFor(m => m.RememberMe) Remember Me</label>
+					<label>@Html.CheckBoxFor(m => m.RememberMe) 保持登入</label>
 				</div>
 			</form>
 		</div>
@@ -36,8 +35,7 @@
 </div><!-- End col-md-6 -->
 <div class="col-md-6">
 	<div class="page-content">
-		<h2>Register Now</h2>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravdio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequa. Vivamus vulputate posuere nisl quis consequat.</p>
-		<a href="/Account/Register" class="button small color">Create an account</a>
+		<h2>馬上註冊</h2>
+		<a href="/Account/Register" class="button small color">創建帳號</a>
 	</div><!-- End page-content -->
 </div><!-- End col-md-6 -->

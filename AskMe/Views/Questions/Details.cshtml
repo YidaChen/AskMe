@@ -1,4 +1,4 @@
-@using Microsoft.AspNet.Identity;
+ï»¿@using Microsoft.AspNet.Identity;
 @model AskMe.Models.Questions
 
 @{
@@ -20,11 +20,11 @@
         <h2>
             <a href="/Questions/Details/@Model.Id">@Model.Title</a>
         </h2>
-        <a class="question-report" style="background-color: gray" href="#">µo°İªÌ: @Model.AspNetUsers.UserName</a>
+        <a class="question-report" style="background-color: gray" href="#">ç™¼å•è€…: @Model.AspNetUsers.UserName</a>
 		<div class="question-inner">
             <div class="clearfix"></div>
             <div class="question-desc">
-				<!--¥i¯à·|¦³XSS°İÃD?-->
+				<!--å¯èƒ½æœƒæœ‰XSSå•é¡Œ?-->
 				<div>
 					@Html.Raw(Model.Detail)
 				</div>
@@ -37,20 +37,20 @@
 							<a href="/Questions/Tagged/@tag.Name">@tag.Name</a><span>, </span>
 						}
 					}
-					<span style="color:gray">  ½s¿è©ó: @Model.UpdateTime</span>
+					<span style="color:gray">  ç·¨è¼¯æ–¼: @Model.UpdateTime</span>
 				</div>
   </div>
             <div class="question-details">
 				@{
 					if (Model.Answers1 != null)
-					{<span class="question-answered question-answered-done"><i class="icon-ok"></i>¤w¦³³Ì¨Î¸Ñ</span>}
+					{<span class="question-answered question-answered-done"><i class="icon-ok"></i>å·²æœ‰æœ€ä½³è§£</span>}
 					else
-					{<span class="question-answered"><i class="icon-question"></i>¥¼¦³³Ì¨Î¸Ñ</span>}
+					{<span class="question-answered"><i class="icon-question"></i>æœªæœ‰æœ€ä½³è§£</span>}
 				}
                 <span class="question-favorite"><span id="iconStarContain"></span><span id="starCount">@Model.AspNetUsers1.Count</span></span>
             </div>
             <span class="question-date"><i class="icon-time"></i>@Model.CreateTime</span>
-            <span class="question-comment"><a href="#"><i class="icon-comment"></i>@Model.Answers.Count ­Ó¦^µª</a></span>
+            <span class="question-comment"><a href="#"><i class="icon-comment"></i>@Model.Answers.Count å€‹å›ç­”</a></span>
             <span class="question-view"><i class="icon-user"></i>@Model.ViewCount views</span>
 			<span class="single-question-vote-result"><span id="questionRateSign">
 	@{if (rateCount > 0){ @Html.Raw("+");}
@@ -73,7 +73,7 @@
             <div class="clearfix"></div>
 			@{
 				if (Model.UserId == User.Identity.GetUserId())
-				{ <a href="/Questions/Edit/@Model.Id" class="button" style="background-color:palevioletred">½s¿è</a> }
+				{ <a href="/Questions/Edit/@Model.Id" class="button" style="background-color:palevioletred">ç·¨è¼¯</a> }
 			}
         </div>
     </article>
@@ -112,13 +112,13 @@
 									<span id="@spanId">@answerRateCount</span>
 								}</span>
 								<div class="comment-meta">
-									<div class="date"><i class="icon-time"></i>½s¿è©ó: @answer.UpdateTime</div>
+									<div class="date"><i class="icon-time"></i>ç·¨è¼¯æ–¼: @answer.UpdateTime</div>
 								</div>
-								<!--<a class="comment-reply" href="#"><i class="icon-reply"></i>¦^ÂĞ</a>--> 
+								<!--<a class="comment-reply" href="#"><i class="icon-reply"></i>å›è¦†</a>--> 
 								@{
 									if (answer.UserId == User.Identity.GetUserId())
 									{
-										<a class="comment-reply" href="/Answers/Edit/@answer.Id" style="color:brown"><i class="icon-pencil"></i>½s¿è </a>
+										<a class="comment-reply" href="/Answers/Edit/@answer.Id" style="color:brown"><i class="icon-pencil"></i>ç·¨è¼¯ </a>
 									}
 								}
 							</div>
@@ -129,9 +129,9 @@
 								if (Model.Answers1 != null && answer.Id == Model.Answers1.Id)
 								{
 									<div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div>
-								} else if (Model.UserId == User.Identity.GetUserId())//ÂsÄıªº¥Î¤á¬O§_¬°µo°İªÌ
+								} else if (Model.UserId == User.Identity.GetUserId())//ç€è¦½çš„ç”¨æˆ¶æ˜¯å¦ç‚ºç™¼å•è€…
 								{
-									<button type="button" class="ChooseBestAnswer button green-button" answerId="@answer.Id">¿ï¬°³Ì¨Î¸Ñ</button>
+									<button type="button" class="ChooseBestAnswer button green-button" answerId="@answer.Id">é¸ç‚ºæœ€ä½³è§£</button>
 								}
 	}
 </div>
@@ -143,7 +143,7 @@
     </div><!-- End page-content -->
     
     <div id="respond" class="comment-respond page-content clearfix">
-        <div class="boxedtitle page-title"><h2>¯d¤U¸Ñµª</h2></div>
+        <div class="boxedtitle page-title"><h2>ç•™ä¸‹è§£ç­”</h2></div>
         <form action="/Answers/Create" method="post" id="commentform" class="comment-form">
             @Html.AntiForgeryToken()
 			<input type="hidden" name="QuestionId" value="@Model.Id" />
@@ -152,18 +152,18 @@
 				{
 					<div id="respond-textarea">
 						<p>
-							<label class="required" for="Detail">¤º®e<span>*</span></label>
+							<label class="required" for="Detail">å…§å®¹<span>*</span></label>
 							<textarea id="comment" name="Detail" required cols="58" rows="8"></textarea>
 						</p>
 					</div>
 					<p class="form-submit">
-						<input name="submit" type="submit" id="submit" value="µo¥¬¸Ñµª" class="button small color">
+						<input name="submit" type="submit" id="submit" value="ç™¼å¸ƒè§£ç­”" class="button small color">
 					</p>
 				}
 				else
 				{
 					<p class="form-submit">
-						<a id="submit" class="button small color" style="display:block;text-align:center" href="/Account/Login?ReturnUrl=/Questions/Details/@Model.Id">½Ğ¥ıµn¤J</a>
+						<a id="submit" class="button small color" style="display:block;text-align:center" href="/Account/Login?ReturnUrl=/Questions/Details/@Model.Id">è«‹å…ˆç™»å…¥</a>
 					</p>
 				}
 			}
@@ -186,7 +186,7 @@
 @section Scripts {
 <script>
 	$('.ChooseBestAnswer').click(function (e) {
-		$.ajax({ //§ó·s³Ì¨Î¸Ñ
+		$.ajax({ //æ›´æ–°æœ€ä½³è§£
 			dataType: "json",
 			method: "POST",
 			url: "/Questions/ChooseBestAnswer",
@@ -202,7 +202,7 @@
 	var iconStar = '<i class="icon-star iconFavor" act="disFavor"></i>';
 	var iconStarEmpty = '<i class="icon-star-empty iconFavor" act="favor"></i>';
 
-	$.ajax({ //¥Î¤á¬O§_star¦¹°İÃD
+	$.ajax({ //ç”¨æˆ¶æ˜¯å¦staræ­¤å•é¡Œ
 			dataType: "json",
 			method: "POST",
 			url: "/Questions/IsUserFavorQuestion",
@@ -221,7 +221,7 @@
 		{
 			var act = $('.iconFavor').attr('act');
 
-			$.ajax({ //star©Îunstar¦¹°İÃD
+			$.ajax({ //staræˆ–unstaræ­¤å•é¡Œ
 			dataType: "json",
 			method: "POST",
 			url: "/Questions/UserFavorQuestion",
@@ -240,7 +240,7 @@
 	}
 	$('.voteQuestion').click(function (e) {
 		var title = $(this).attr('title');// Like, Dislike
-		$.ajax({ //rate¦¹°İÃD
+		$.ajax({ //rateæ­¤å•é¡Œ
 			dataType: "json",
 			method: "POST",
 			url: "/Questions/UserRateQuestion",
@@ -267,7 +267,7 @@
 	$('.answerVote').click(function (e) {
 		var title = $(this).attr('title');// Like, Dislike
 		var answerId = $(this).attr('answerId');
-		$.ajax({ //rate¦¹°İÃD
+		$.ajax({ //rateæ­¤å•é¡Œ
 			dataType: "json",
 			method: "POST",
 			url: "/Answers/UserRateAnswer",

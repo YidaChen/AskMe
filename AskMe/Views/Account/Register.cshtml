@@ -1,30 +1,30 @@
-@model AskMe.Models.RegisterViewModel
+ï»¿@model AskMe.Models.RegisterViewModel
 @{
-	ViewBag.Title = "µù¥U";
+	ViewBag.Title = "è¨»å†Š";
 }
 <div class="col-md-12">
 	<div class="page-content">
-		<h2>«Ø¥ß·sªº±b¤á</h2>
+		<h2>å»ºç«‹æ–°çš„å¸³æˆ¶</h2>
 		<div class="form-style form-style-3">
 			<form method="post">
 				@Html.AntiForgeryToken()
 				<div class="form-inputs clearfix">
 					@Html.ValidationSummary("", new { @class = "text-danger" })
 					<p class="login-text">
-						@Html.TextBoxFor(m => m.Email, new { @placeholder = "½Ğ¿é¤JEmail" })
+						@Html.TextBoxFor(m => m.Email, new { @placeholder = "è«‹è¼¸å…¥Email" })
 						<i class="icon-user"></i>
 					</p>
 					<p class="login-password">
-						@Html.PasswordFor(m => m.Password, new { @placeholder = "½Ğ¿é¤J±K½X" })
+						@Html.PasswordFor(m => m.Password, new { @placeholder = "è«‹è¼¸å…¥å¯†ç¢¼" })
 						<i class="icon-lock"></i>
 					</p>
 					<p class="login-password">
-						@Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "½T»{±K½X" })
+						@Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "ç¢ºèªå¯†ç¢¼" })
 						<i class="icon-lock"></i>
 					</p>
 				</div>
 				<p class="form-submit login-submit">
-					<input type="submit" value="µù¥U" class="button color small login-submit submit">
+					<input type="submit" value="è¨»å†Š" class="button color small login-submit submit">
 				</p>
 			</form>
 		</div>
